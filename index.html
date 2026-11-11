@@ -121,6 +121,16 @@ body.tv .goal h2{font-size:clamp(16px,2.3vh,27px)}
 body.tv .progress{height:clamp(15px,2.3vh,27px)}
 body.tv .wrap>p.muted{font-size:clamp(11px,1.45vh,17px)}
 @media(max-height:700px){body.tv .middle>.panel h2{margin-bottom:7px}body.tv .rank{font-size:clamp(11px,1.7vh,18px)}body.tv .center .drop{font-size:21vh}body.tv .blood{gap:5px}}
+
+/* Fix TV grid intrinsic-width collapse on wide displays */
+html.tv,body.tv,body.tv #app{width:100%;min-width:0}
+body.tv #app{display:block}
+body.tv .wrap{box-sizing:border-box;grid-template-columns:minmax(0,1fr);width:100%;max-width:100%;margin:0}
+body.tv .wrap>.stats,body.tv .wrap>.middle,body.tv .wrap>.goal,body.tv .wrap>p{width:100%;min-width:0}
+body.tv .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+body.tv .middle{grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr) minmax(0,1.12fr)}
+body.tv .middle>*{min-width:0}
+body.tv .center h2{max-width:100%}
 </style></head><body><header><strong>🩸 Подаруй життя <span class="live">● LIVE</span></strong><nav class="toolbar"><button class="secondary" onclick="setMode('screen')">Екран</button><button class="secondary" onclick="setMode('admin')">Адмінпанель</button></nav></header><div id="donorEvent" class="event-layer" hidden aria-live="polite"><div class="event-wash"></div><div class="event-ring"></div><div class="event-ring two"></div><div class="event-card"><div class="event-drop">🩸</div><div class="event-kicker">РАЗОМ РЯТУЄМО ЖИТТЯ</div><div class="event-main">+1 ДОНОР</div><div id="eventSchool" class="event-school"></div></div></div><div id="milestoneEvent" class="milestone-layer" hidden aria-live="assertive"><div id="confettiHost"></div><div class="milestone-content"><div class="milestone-symbol">❤️🩸</div><div class="milestone-title">ЦІЛЬ ДОСЯГНУТО!</div><div id="milestoneSubtitle" class="milestone-subtitle"></div></div></div><main id="app"><div class="wrap"><p class="muted">Завантаження дашборду…</p></div></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script><script>const SUPABASE_URL='https://cygkwcenngjheqpmtlif.supabase.co',KEY='sb_publishable_H8TE3_Wr8G2v2N90Er2pLw_YnkdwGUk';
 const schools=['IT STEP Університет','ЛНУ ім. Івана Франка','ЛДУБЖД','ЛДУВС','ЛДУФК ім. І. Боберського'],types=['O−','O+','A−','A+','B−','B+','AB−','AB+'];
 const app=document.getElementById('app');if(!window.supabase){app.innerHTML='<div class="wrap panel"><h2>Не вдалося завантажити модуль Supabase</h2><p>Перезавантажте сторінку (Ctrl+F5). Якщо проблема залишиться, перевірте блокування CDN у браузері.</p></div>';throw new Error('Supabase library failed to load')}const client=window.supabase.createClient(SUPABASE_URL,KEY);let mode=['admin','tv'].includes(new URLSearchParams(location.search).get('mode'))?new URLSearchParams(location.search).get('mode'):'screen',state={goal:75,donors:[]},user=null,isAdmin=false,error='',recovery=false,notice='',eventQueue=[],eventActive=false,initialized=false,milestoneActive=false,milestoneTimer=null,previousGoal=75,previousCount=0;
